@@ -1,8 +1,10 @@
-<section *ngIf="users.length; else loading">
-<ng-container *ngFor="let user of users">
-  <p>{{user.name}}</p>
+<ng-container *ngIf="userData$ | async as users; else loading">
+  <section>
+    <ng-container *ngFor="let user of users">
+      <p>{{user.name}}</p>
+    </ng-container>
+    </section>
 </ng-container>
-</section>
 
 <ng-template #loading>
   <div>Loading...</div>
