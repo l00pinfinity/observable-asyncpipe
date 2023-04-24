@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable, take } from 'rxjs';
+import { Observable, catchError, ignoreElements, of, take } from 'rxjs';
 import { User } from './core/models/user';
 import { UserService } from './core/services/user.service';
 
@@ -12,5 +12,12 @@ export class AppComponent {
 
   userData$: Observable<User[]> = this.userService.getUsers().pipe(take(1));
 
-  constructor(private userService: UserService){}
+  userDataError$: Observable<{message:string}> = this.userData$.pipe(
+    ignoreElements(), // means we only care about errors and completions
+    catchError((err) => {
+      return of(err);
+    })
+  );
+
+  constructor(private userService: UserService) { }
 }

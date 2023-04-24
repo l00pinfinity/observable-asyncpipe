@@ -1,11 +1,17 @@
-<ng-container *ngIf="userData$ | async as users; else loading">
-  <section>
+<ng-container *ngIf="{userData: userData$ | async, userDataError: userDataError$ | async} as ud">
+  <section *ngIf="ud.userData as users; else loading">
     <ng-container *ngFor="let user of users">
       <p>{{user.name}}</p>
     </ng-container>
-    </section>
-</ng-container>
+  </section>
 
-<ng-template #loading>
-  <div>Loading...</div>
-</ng-template>
+  <div *ngIf="ud.userDataError as error">
+    {{error.message}}
+  </div>
+
+  <ng-template #loading>
+    <div *ngIf="!ud.userDataError">
+      <div>Loading...</div>
+    </div>
+  </ng-template>
+</ng-container>
